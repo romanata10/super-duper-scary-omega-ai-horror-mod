@@ -1,0 +1,11 @@
+name: smoke-test
+on:
+  workflow_dispatch:
+  push:
+    branches: [ arena/7975fdd6-super-duper-scary-omega-ai-hor ]
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "actions works" && java -version 2>&1 || true
