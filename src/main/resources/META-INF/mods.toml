@@ -1,0 +1,24 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+
+[[mods]]
+modId="omega_horror"
+version="1.0.0"
+displayName="Super Duper Scary Omega AI Horror Mod"
+description="Очень страшный хоррор-мод: David, Null, mart, торнадо, молоко, злые кнопки, планета Iris и многое другое."
+authors="romanata10"
+
+[[dependencies.omega_horror]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.omega_horror]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.21)"
+ordering="NONE"
+side="BOTH"

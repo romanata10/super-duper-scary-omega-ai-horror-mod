@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["III", "IGI", "III"],
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "G": { "item": "minecraft:black_stained_glass_pane" }
+  },
+  "result": { "item": "omega_horror:browser_pc", "count": 1 }
+}

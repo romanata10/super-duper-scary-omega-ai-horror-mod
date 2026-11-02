@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "omega_horror:milk_bucket" },
+    { "item": "minecraft:glass_bottle" }
+  ],
+  "result": { "item": "omega_horror:glass_of_milk", "count": 1 }
+}
