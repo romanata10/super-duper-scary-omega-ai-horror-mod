@@ -45,23 +45,23 @@ public class EvilFishEntity extends Monster {
         super.tick();
         if (!this.level().isClientSide && this.tickCount % 30 == 0
                 && this.getTarget() instanceof Player) {
-            this.level().playSound(null, this.blockPosition(), SoundEvents.GENERIC_SWIM,
+            this.level().playSound(null, this.blockPosition(), SoundEvents.GENERIC_SWIM.value(),
                     SoundSource.HOSTILE, 0.6f, 2.0f);
         }
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getAmbientSound() {
-        return SoundEvents.COD_AMBIENT;
+        return SoundEvents.COD_AMBIENT.value();
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.COD_HURT;
+        return SoundEvents.COD_HURT.value();
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getDeathSound() {
-        return SoundEvents.COD_DEATH;
+        return SoundEvents.COD_DEATH.value();
     }
 }

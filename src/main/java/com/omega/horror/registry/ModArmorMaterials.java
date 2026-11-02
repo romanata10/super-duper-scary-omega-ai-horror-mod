@@ -9,7 +9,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.Items;
 
 public enum ModArmorMaterials implements ArmorMaterial {
-    FEMBOY("femboy", 100, new int[]{3, 6, 8, 3}, 30, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0f, 0.2f,
+    FEMBOY("femboy", 100, new int[]{3, 6, 8, 3}, 30, SoundEvents.ARMOR_EQUIP_NETHERITE.value(), 5.0f, 0.2f,
             () -> Ingredient.of(Items.PINK_WOOL));
 
     private final String name;

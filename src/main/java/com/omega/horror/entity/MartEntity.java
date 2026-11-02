@@ -56,7 +56,7 @@ public class MartEntity extends PathfinderMob {
             if (player != null) {
                 player.sendSystemMessage(Component.literal("🛒 mart: " + LINES[this.random.nextInt(LINES.length)])
                         .withStyle(ChatFormatting.YELLOW));
-                this.level().playSound(null, this.blockPosition(), SoundEvents.VILLAGER_AMBIENT,
+                this.level().playSound(null, this.blockPosition(), SoundEvents.VILLAGER_AMBIENT.value(),
                         SoundSource.NEUTRAL, 1.0f, 0.6f);
             }
         }
@@ -64,16 +64,16 @@ public class MartEntity extends PathfinderMob {
 
     @Override
     protected net.minecraft.sounds.SoundEvent getAmbientSound() {
-        return SoundEvents.ENDERMAN_STARE;
+        return SoundEvents.ENDERMAN_STARE.value();
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.VILLAGER_HURT;
+        return SoundEvents.VILLAGER_HURT.value();
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getDeathSound() {
-        return SoundEvents.VILLAGER_DEATH;
+        return SoundEvents.VILLAGER_DEATH.value();
     }
 }

@@ -187,7 +187,7 @@ public class ModEvents {
                 player.getInventory().add(new ItemStack(ModItems.GLASS_OF_MILK.get()));
                 player.sendSystemMessage(Component.literal("🥛 David дарит тебе стакан молока за то, что ты искупался в молоке!")
                         .withStyle(ChatFormatting.GOLD));
-                player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP,
+                player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP.value(),
                         SoundSource.PLAYERS, 1.0f, 1.5f);
             }
         } else {

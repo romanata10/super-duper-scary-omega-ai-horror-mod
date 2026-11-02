@@ -64,7 +64,7 @@ public class TornadoEntity extends Entity {
 
             // Кусает и подбрасывает существ рядом
             for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class,
-                    this.getBoundingBox().inflate(3.0), e -> e != this && e.isAlive())) {
+                    this.getBoundingBox().inflate(3.0), LivingEntity::isAlive)) {
                 entity.hurt(this.level().damageSources().generic(), 4.0f);
                 entity.setDeltaMovement(entity.getDeltaMovement().add(
                         (this.random.nextDouble() - 0.5) * 0.6, 0.9, (this.random.nextDouble() - 0.5) * 0.6));

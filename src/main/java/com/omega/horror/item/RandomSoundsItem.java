@@ -1,6 +1,7 @@
 package com.omega.horror.item;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -12,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class RandomSoundsItem extends Item {
-    private static final SoundEvent[] SOUNDS = {
+    private static final Holder.Reference<SoundEvent>[] SOUNDS = {
             SoundEvents.CREEPER_PRIMED,
             SoundEvents.ENDERMAN_SCREAM,
             SoundEvents.GHAST_SCREAM,
@@ -34,11 +35,11 @@ public class RandomSoundsItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide) {
-            SoundEvent sound = SOUNDS[level.random.nextInt(SOUNDS.length)];
-            level.playSound(null, player.blockPosition(), sound, SoundSource.PLAYERS, 2.0f,
+            Holder.Reference<SoundEvent> sound = SOUNDS[level.random.nextInt(SOUNDS.length)].value();
+            level.playSound(null, player.blockPosition(), sound.value(), SoundSource.PLAYERS, 2.0f,
                     0.5f + level.random.nextFloat());
             player.displayClientMessage(Component.literal("🔊 Проигрывается рандомный звук: "
-                    + sound.getLocation().getPath()), true);
+                    + sound.value().getLocation().getPath()), true);
         }
         return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide);
     }

@@ -64,7 +64,7 @@ public class DavidEntity extends Monster {
             if (this.distanceToSqr(cow) < 4.0) {
                 BlockPos pos = cow.blockPosition();
                 cow.discard();
-                this.level().playSound(null, pos, SoundEvents.GENERIC_DRINK, SoundSource.HOSTILE, 2.0f, 0.4f);
+                this.level().playSound(null, pos, SoundEvents.GENERIC_DRINK.value(), SoundSource.HOSTILE, 2.0f, 0.4f);
                 ((ServerLevel) this.level()).sendParticles(ParticleTypes.SPLASH,
                         cow.getX(), cow.getY() + 0.5, cow.getZ(), 40, 0.5, 0.5, 0.5, 0.1);
                 if (this.level().getServer() != null) {
@@ -91,7 +91,7 @@ public class DavidEntity extends Monster {
             if (stole) {
                 player.sendSystemMessage(Component.literal("🥛 David украл всё твоё молоко!")
                         .withStyle(ChatFormatting.DARK_RED));
-                this.level().playSound(null, this.blockPosition(), SoundEvents.GENERIC_DRINK,
+                this.level().playSound(null, this.blockPosition(), SoundEvents.GENERIC_DRINK.value(),
                         SoundSource.HOSTILE, 2.0f, 0.3f);
             }
         }
@@ -99,16 +99,16 @@ public class DavidEntity extends Monster {
 
     @Override
     protected net.minecraft.sounds.SoundEvent getAmbientSound() {
-        return SoundEvents.ZOMBIE_AMBIENT;
+        return SoundEvents.ZOMBIE_AMBIENT.value();
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ZOMBIE_HURT;
+        return SoundEvents.ZOMBIE_HURT.value();
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getDeathSound() {
-        return SoundEvents.ZOMBIE_DEATH;
+        return SoundEvents.ZOMBIE_DEATH.value();
     }
 }

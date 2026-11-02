@@ -64,7 +64,7 @@ public class ButtonMonsterEntity extends Monster {
                 this.level().setBlock(air, ModBlocks.EVIL_BUTTON.get().defaultBlockState()
                         .setValue(ButtonBlock.FACING, dir)
                         .setValue(ButtonBlock.FACE, AttachFace.WALL), 3);
-                this.level().playSound(null, air, SoundEvents.STONE_BUTTON_CLICK_ON,
+                this.level().playSound(null, air, SoundEvents.STONE_BUTTON_CLICK_ON.value(),
                         net.minecraft.sounds.SoundSource.BLOCKS, 1.0f, 0.5f);
                 break;
             }
@@ -81,22 +81,22 @@ public class ButtonMonsterEntity extends Monster {
             this.spawnAtLocation(new ItemStack(ModItems.EVIL_BUTTON.get(), count));
             left -= count;
         }
-        this.level().playSound(null, this.blockPosition(), SoundEvents.CHEST_OPEN,
+        this.level().playSound(null, this.blockPosition(), SoundEvents.CHEST_OPEN.value(),
                 net.minecraft.sounds.SoundSource.HOSTILE, 1.0f, 0.7f);
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getAmbientSound() {
-        return SoundEvents.STONE_BUTTON_CLICK_OFF;
+        return SoundEvents.STONE_BUTTON_CLICK_OFF.value();
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ANVIL_LAND;
+        return SoundEvents.ANVIL_LAND.value();
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getDeathSound() {
-        return SoundEvents.GENERIC_EXPLODE;
+        return SoundEvents.GENERIC_EXPLODE.value();
     }
 }

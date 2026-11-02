@@ -14,6 +14,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -23,7 +24,7 @@ import net.minecraft.sounds.SoundSource;
  * При убийстве выпадает предмет рандомных звуков.
  */
 public class SoundpadEntity extends Monster {
-    private static final SoundEvent[] SOUNDS = {
+    private static final Holder.Reference<SoundEvent>[] SOUNDS = {
             SoundEvents.CREEPER_PRIMED,
             SoundEvents.ENDERMAN_SCREAM,
             SoundEvents.GHAST_SCREAM,
@@ -63,8 +64,8 @@ public class SoundpadEntity extends Monster {
     public void tick() {
         super.tick();
         if (!this.level().isClientSide && this.tickCount % 50 == 0 && this.random.nextInt(3) == 0) {
-            SoundEvent sound = SOUNDS[this.random.nextInt(SOUNDS.length)];
-            this.level().playSound(null, this.blockPosition(), sound, SoundSource.HOSTILE,
+            Holder.Reference<SoundEvent> sound = SOUNDS[this.random.nextInt(SOUNDS.length)].value();
+            this.level().playSound(null, this.blockPosition(), sound.value(), SoundSource.HOSTILE,
                     2.0f, 0.6f + this.random.nextFloat() * 0.8f);
         }
     }
@@ -77,16 +78,16 @@ public class SoundpadEntity extends Monster {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.NOTE_BLOCK_PLING;
+        return SoundEvents.NOTE_BLOCK_PLING.value();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.NOTE_BLOCK_BASS;
+        return SoundEvents.NOTE_BLOCK_BASS.value();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.NOTE_BLOCK_DIDGERIDOO;
+        return SoundEvents.NOTE_BLOCK_DIDGERIDOO.value();
     }
 }

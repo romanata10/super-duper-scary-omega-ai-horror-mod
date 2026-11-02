@@ -65,23 +65,23 @@ public class NullEntity extends Monster {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        this.level().playSound(null, this.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM,
+        this.level().playSound(null, this.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM.value(),
                 SoundSource.HOSTILE, 1.0f, 0.5f);
         return super.hurt(source, amount);
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getAmbientSound() {
-        return SoundEvents.WARDEN_HEARTBEAT;
+        return SoundEvents.WARDEN_HEARTBEAT.value();
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.WARDEN_HURT;
+        return SoundEvents.WARDEN_HURT.value();
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getDeathSound() {
-        return SoundEvents.WARDEN_DEATH;
+        return SoundEvents.WARDEN_DEATH.value();
     }
 }
