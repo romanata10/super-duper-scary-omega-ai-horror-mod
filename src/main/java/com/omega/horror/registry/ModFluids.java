@@ -2,7 +2,7 @@ package com.omega.horror.registry;
 
 import com.omega.horror.OmegaHorrorMod;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeProperties;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.DeferredRegister;
@@ -31,8 +31,8 @@ public class ModFluids {
                     .motionScale(0.014D)
                     .canConvertToSource(true)) {
                 @Override
-                public void initializeClient(Consumer<IClientFluidTypeProperties> consumer) {
-                    consumer.accept(new IClientFluidTypeProperties() {
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
                         @Override
                         public ResourceLocation getStillTexture() {
                             return new ResourceLocation(OmegaHorrorMod.MODID, "block/milk_still");
