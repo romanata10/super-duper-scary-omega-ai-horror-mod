@@ -65,6 +65,7 @@ public class OmegaHorror {
         return new ForgeFlowingFluid.Properties(MILK_TYPE, MILK, FLOWING_MILK).block(MILK_BLOCK).bucket(() -> Items.MILK_BUCKET);
     }
     public static final RegistryObject<Item> SOCKS = ITEMS.register("femboy_socks", () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> IRIS_EYE = ITEMS.register("iris_eye", () -> new Item(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> SOUND = ITEMS.register("random_sounds", () -> new Item(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Block> KRITA = BLOCKS.register("krita", () -> new KritaBlock(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL)));
     public static final RegistryObject<Item> KRITA_ITEM = ITEMS.register("krita", () -> new BlockItem(KRITA.get(), new Item.Properties()));
@@ -76,7 +77,7 @@ public class OmegaHorror {
         MinecraftForge.EVENT_BUS.register(this);
     }
     private void creative(BuildCreativeModeTabContentsEvent e) {
-        if (e.getTabKey() == CreativeModeTabs.INGREDIENTS) { e.accept(SOCKS); e.accept(SOUND); e.accept(KRITA_ITEM); }
+        if (e.getTabKey() == CreativeModeTabs.INGREDIENTS) { e.accept(SOCKS); e.accept(SOUND); e.accept(KRITA_ITEM); e.accept(IRIS_EYE); }
     }
     private static Zombie monster(ServerLevel level, BlockPos pos, String tag, String name) {
         Zombie z = EntityType.ZOMBIE.create(level);
@@ -141,6 +142,12 @@ public class OmegaHorror {
     }
     @SubscribeEvent public void use(PlayerInteractEvent.RightClickItem e) {
         if (!(e.getLevel() instanceof ServerLevel level)) return;
+        if (e.getItemStack().is(IRIS_EYE.get()) && e.getEntity() instanceof ServerPlayer player && !player.getCooldowns().isOnCooldown(IRIS_EYE.get())) {
+            if (IrisTravel.travel(player)) {
+                player.getCooldowns().addCooldown(IRIS_EYE.get(), 100);
+                player.sendSystemMessage(Component.literal("Iris смотрит на тебя."));
+            }
+        }
         if (e.getItemStack().is(SOUND.get())) {
             level.playSound(null, e.getEntity().blockPosition(), randomSound(level), SoundSource.PLAYERS, 1, 0.5f + level.random.nextFloat());
         }
