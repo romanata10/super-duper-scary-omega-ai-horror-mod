@@ -34,8 +34,9 @@ jobs:
           timeout --signal=TERM 260 gradle runServer --no-daemon > server-boot.txt 2>&1 || true
           echo "--- server log tail ---"
           tail -n 60 run/logs/latest.log 2>/dev/null || echo "NO LOG"
-          if grep -qE 'Exception in thread|Caused by:|Failed to load|com\.omega\.horror' run/logs/latest.log 2>/dev/null; then
-            grep -B2 -A15 -E 'Exception in thread|Caused by:|Failed to load|com\.omega\.horror' run/logs/latest.log | head -100 | while IFS= read -r line; do echo "::error::$line"; done
+          grep -i 'omega_horror' run/logs/latest.log 2>/dev/null | head -20 || true
+          if grep -qE 'Exception in thread|Caused by:|Failed to parse|Failed to load dimension|Failed to load datapack|at com\.omega\.horror' run/logs/latest.log 2>/dev/null; then
+            grep -B2 -A15 -E 'Exception in thread|Caused by:|Failed to parse|Failed to load dimension|Failed to load datapack|at com\.omega\.horror' run/logs/latest.log | head -100 | while IFS= read -r line; do echo "::error::$line"; done
             exit 1
           fi
           if grep -q 'Done (' run/logs/latest.log; then echo '::notice::server booted OK with the mod'; else echo '::error::server did not reach Done — see log tail above'; exit 1; fi
