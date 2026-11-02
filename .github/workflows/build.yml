@@ -1,4 +1,4 @@
-name: build-mod-jar
+name: Build Forge mod
 on:
   push:
     branches: [ arena/7975fdd6-super-duper-scary-omega-ai-hor ]
@@ -16,16 +16,28 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - uses: gradle/actions/setup-gradle@v3
-      - name: Build the mod jar with ForgeGradle
-        run: gradle build --no-daemon
-      - name: Upload jar to GitHub release
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.1.1'
+      - name: Build the mod jar
+        shell: bash
+        run: |
+          set -o pipefail
+          gradle build --no-daemon 2>&1 | tee build-log.txt || {
+            grep -A 8 -E 'error:|What went wrong:|FAILURE:|Could not ' build-log.txt | head -60 | while IFS= read -r line; do echo "::error::$line"; done
+            exit 1
+          }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: omega-horror-jar
+          path: build/libs/*.jar
+          if-no-files-found: error
+      - name: Publish jar to GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create v1.0.0 --title "Super Duper Scary Omega AI Horror Mod v1.0.0" --notes "Очень страшный хоррор-мод. Скачай .jar и закинь в папку mods." || true
-          gh release upload v1.0.0 build/libs/*.jar --clobber
-      - uses: actions/upload-artifact@v4
-        with:
-          name: mod-jar
-          path: build/libs/*.jar
+          gh release create v1.0.0 build/libs/*.jar \
+            --target "$GITHUB_SHA" \
+            --title 'Super Duper Scary Omega AI Horror Mod v1.0.0' \
+            --notes 'Очень страшный хоррор-мод для Minecraft 1.20.1 (Forge 47.2.0). 16 фичей: планета Iris, David, молоко-жидкость, злые кнопки, торнадо, Krita, браузер-ПК, злые рыбки, soundpad, самолёт, mart, NULL, носки фембойчика и взлом от насоса Василия. Jar нужно положить в папку mods.' \
+            || gh release upload v1.0.0 build/libs/*.jar --clobber
