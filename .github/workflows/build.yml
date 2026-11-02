@@ -14,7 +14,14 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.1.1'
-      - run: gradle build --no-daemon
+      - name: Build
+        shell: bash
+        run: |
+          set -o pipefail
+          gradle build --no-daemon 2>&1 | tee build-log.txt || {
+            grep -A 8 -E 'error:|What went wrong:|FAILURE:|Could not ' build-log.txt | head -40 | while IFS= read -r line; do echo "::error::$line"; done
+            exit 1
+          }
       - uses: actions/upload-artifact@v4
         with:
           name: omega-horror-jar
