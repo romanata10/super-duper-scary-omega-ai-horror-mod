@@ -1,6 +1,7 @@
 package com.omega.horror.registry;
 
 import com.omega.horror.OmegaHorrorMod;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidType;
@@ -17,7 +18,7 @@ public class ModFluids {
     public static final DeferredRegister<Fluid> FLUIDS =
             DeferredRegister.create(ForgeRegistries.FLUIDS, OmegaHorrorMod.MODID);
     public static final DeferredRegister<FluidType> FLUID_TYPES =
-            DeferredRegister.create(ForgeRegistries.FLUID_TYPES, OmegaHorrorMod.MODID);
+            DeferredRegister.create(Registries.FLUID_TYPE, OmegaHorrorMod.MODID);
 
     public static final RegistryObject<FlowingFluid> MILK =
             FLUIDS.register("milk", () -> new ForgeFlowingFluid.Source(MILK_PROPERTIES));
