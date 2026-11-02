@@ -16,7 +16,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.animal.Fish;
+import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,6 +24,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -129,21 +130,21 @@ public class ModEvents {
     /** Ударил рыбку — злые рыбки идут за тобой. */
     @SubscribeEvent
     public static void onFishHurt(LivingHurtEvent event) {
-        if (event.getEntity() instanceof Fish && event.getSource().getEntity() instanceof Player player) {
+        if (event.getEntity() instanceof AbstractFish && event.getSource().getEntity() instanceof Player player) {
             angerFish(player);
         }
     }
 
     @SubscribeEvent
     public static void onFishInteract(PlayerInteractEvent.EntityInteract event) {
-        if (event.getTarget() instanceof Fish && event.getEntity() instanceof Player player) {
+        if (event.getTarget() instanceof AbstractFish && event.getEntity() instanceof Player player) {
             angerFish(player);
         }
     }
 
     /** Порыбачил — злые рыбки идут за тобой. */
     @SubscribeEvent
-    public static void onFished(PlayerEvent.ItemFishedEvent event) {
+    public static void onFished(ItemFishedEvent event) {
         if (event.getEntity() instanceof Player player) {
             angerFish(player);
         }
