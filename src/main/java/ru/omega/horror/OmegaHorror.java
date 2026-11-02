@@ -109,7 +109,7 @@ public class OmegaHorror {
         angerFish(level, player);
     }
     private static SoundEvent randomSound(ServerLevel level) {
-        SoundEvent[] sounds = { SoundEvents.AMBIENT_CAVE, SoundEvents.ENDERMAN_SCREAM, SoundEvents.GHAST_SCREAM, SoundEvents.WARDEN_HEARTBEAT, SoundEvents.CAT_AMBIENT };
+        SoundEvent[] sounds = { SoundEvents.AMBIENT_CAVE.value(), SoundEvents.ENDERMAN_SCREAM, SoundEvents.GHAST_SCREAM, SoundEvents.WARDEN_HEARTBEAT, SoundEvents.CAT_AMBIENT };
         return sounds[level.random.nextInt(sounds.length)];
     }
     @SubscribeEvent public void use(PlayerInteractEvent.RightClickItem e) {
