@@ -24,6 +24,12 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
+import net.minecraftforge.registries.ForgeRegistries.Keys;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
@@ -49,14 +55,23 @@ public class OmegaHorror {
     public static final String ID = "omegahorror";
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ID);
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ID);
+    private static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(Keys.FLUID_TYPES, ID);
+    private static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, ID);
+    public static final RegistryObject<FluidType> MILK_TYPE = FLUID_TYPES.register("milk", MilkFluidType::new);
+    public static final RegistryObject<ForgeFlowingFluid> MILK = FLUIDS.register("milk", () -> new ForgeFlowingFluid.Source(milkProperties()));
+    public static final RegistryObject<ForgeFlowingFluid> FLOWING_MILK = FLUIDS.register("flowing_milk", () -> new ForgeFlowingFluid.Flowing(milkProperties()));
+    public static final RegistryObject<LiquidBlock> MILK_BLOCK = BLOCKS.register("milk", () -> new LiquidBlock(MILK, BlockBehaviour.Properties.copy(Blocks.WATER)));
+    private static ForgeFlowingFluid.Properties milkProperties() {
+        return new ForgeFlowingFluid.Properties(MILK_TYPE, MILK, FLOWING_MILK).block(MILK_BLOCK).bucket(() -> Items.MILK_BUCKET);
+    }
     public static final RegistryObject<Item> SOCKS = ITEMS.register("femboy_socks", () -> new Item(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> SOUND = ITEMS.register("random_sounds", () -> new Item(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Block> KRITA = BLOCKS.register("krita", () -> new Block(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL)));
+    public static final RegistryObject<Block> KRITA = BLOCKS.register("krita", () -> new KritaBlock(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL)));
     public static final RegistryObject<Item> KRITA_ITEM = ITEMS.register("krita", () -> new BlockItem(KRITA.get(), new Item.Properties()));
 
     public OmegaHorror() {
         var bus = FMLJavaModLoadingContext.get().getModEventBus();
-        ITEMS.register(bus); BLOCKS.register(bus);
+        ITEMS.register(bus); BLOCKS.register(bus); FLUID_TYPES.register(bus); FLUIDS.register(bus);
         bus.addListener(this::creative);
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -112,6 +127,18 @@ public class OmegaHorror {
         SoundEvent[] sounds = { SoundEvents.AMBIENT_CAVE.value(), SoundEvents.ENDERMAN_SCREAM, SoundEvents.GHAST_SCREAM, SoundEvents.WARDEN_HEARTBEAT, SoundEvents.CAT_AMBIENT };
         return sounds[level.random.nextInt(sounds.length)];
     }
+    @SubscribeEvent public void pourMilk(PlayerInteractEvent.RightClickBlock e) {
+        if (!e.getItemStack().is(Items.MILK_BUCKET) || e.getFace() == null) return;
+        BlockPos pos = e.getPos().relative(e.getFace());
+        if (!e.getLevel().getBlockState(pos).canBeReplaced() || !e.getEntity().mayUseItemAt(pos, e.getFace(), e.getItemStack())) return;
+        if (!e.getLevel().isClientSide) {
+            e.getLevel().setBlock(pos, MILK_BLOCK.get().defaultBlockState(), 3);
+            if (!e.getEntity().getAbilities().instabuild) e.getEntity().setItemInHand(e.getHand(), new ItemStack(Items.BUCKET));
+            e.getLevel().playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1, 1);
+        }
+        e.setCancellationResult(InteractionResult.sidedSuccess(e.getLevel().isClientSide));
+        e.setCanceled(true);
+    }
     @SubscribeEvent public void use(PlayerInteractEvent.RightClickItem e) {
         if (!(e.getLevel() instanceof ServerLevel level)) return;
         if (e.getItemStack().is(SOUND.get())) {
@@ -121,9 +148,45 @@ public class OmegaHorror {
     @SubscribeEvent public void tick(TickEvent.LevelTickEvent e) {
         if (e.phase != TickEvent.Phase.END || !(e.level instanceof ServerLevel level) || level.getGameTime() % 40 != 0) return;
         for (ServerPlayer p : level.players()) {
+            if (level.getFluidState(p.blockPosition()).getType().getFluidType() == MILK_TYPE.get()
+                    && p.getPersistentData().getLong("omega_milk_gift") <= level.getGameTime()) {
+                p.getPersistentData().putLong("omega_milk_gift", level.getGameTime() + 24000);
+                p.sendSystemMessage(Component.literal("Давид: держи 64 ведра молока!"));
+                for (int i = 0; i < 64; i++) {
+                    ItemStack bucket = new ItemStack(Items.MILK_BUCKET);
+                    if (!p.getInventory().add(bucket)) p.drop(bucket, false);
+                }
+            }
             if (p.getInventory().contains(new ItemStack(SOCKS.get()))) {
-                p.addEffect(new MobEffectInstance(MobEffects.HEALTH_BOOST, 100, 249, true, false));
+                p.addEffect(new MobEffectInstance(MobEffects.HEALTH_BOOST, 100, 244, true, false));
                 p.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 99, true, false));
+            }
+            // A short-lived funnel with a fixed centre; its state follows its owning player
+            // across saves and is cleared after two minutes.
+            var data = p.getPersistentData();
+            long end = data.getLong("omega_storm_end");
+            if (end <= level.getGameTime() && level.random.nextInt(1800) == 0) {
+                data.putLong("omega_storm_end", level.getGameTime() + 2400);
+                data.putInt("omega_storm_x", p.blockPosition().getX() + level.random.nextInt(25) - 12);
+                data.putInt("omega_storm_z", p.blockPosition().getZ() + level.random.nextInt(25) - 12);
+                end = data.getLong("omega_storm_end");
+                p.sendSystemMessage(Component.literal("Небо завыло. Приближается торнадо!"));
+            }
+            if (end > level.getGameTime()) {
+                double x = data.getInt("omega_storm_x") + .5, z = data.getInt("omega_storm_z") + .5;
+                int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, (int)x, (int)z);
+                for (int h = 0; h < 18; h++) {
+                    double angle = level.getGameTime() * .08 + h * .8;
+                    double radius = .6 + h * .20;
+                    level.sendParticles(ParticleTypes.CLOUD, x + Math.cos(angle) * radius, y + h, z + Math.sin(angle) * radius, 2, .15, .1, .15, .01);
+                }
+                AABB funnel = new AABB(x - 8, y - 4, z - 8, x + 8, y + 20, z + 8);
+                for (LivingEntity victim : level.getEntitiesOfClass(LivingEntity.class, funnel)) {
+                    double dx = x - victim.getX(), dz = z - victim.getZ();
+                    double distance = Math.max(1, Math.sqrt(dx * dx + dz * dz));
+                    victim.push(dx / distance * .35 - dz / distance * .25, .55, dz / distance * .35 + dx / distance * .25);
+                    victim.hurtMarked = true;
+                }
             }
             if (level.random.nextInt(300) == 0) p.sendSystemMessage(Component.literal("[ШУТКА] Твой ПК взломан насосом Василием! Он в 250 метрах от тебя."));
             if (level.random.nextInt(500) == 0) {
