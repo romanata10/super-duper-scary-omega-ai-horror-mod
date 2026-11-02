@@ -1,7 +1,6 @@
 package com.omega.horror.registry;
 
 import com.omega.horror.OmegaHorrorMod;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidType;
@@ -18,7 +17,14 @@ public class ModFluids {
     public static final DeferredRegister<Fluid> FLUIDS =
             DeferredRegister.create(ForgeRegistries.FLUIDS, OmegaHorrorMod.MODID);
     public static final DeferredRegister<FluidType> FLUID_TYPES =
-            DeferredRegister.create(Registries.FLUID_TYPE, OmegaHorrorMod.MODID);
+            DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, OmegaHorrorMod.MODID);
+
+    public static final ForgeFlowingFluid.Properties MILK_PROPERTIES = new ForgeFlowingFluid.Properties(
+            () -> MILK_TYPE.get(), () -> MILK.get(), () -> MILK_FLOWING.get())
+            .slopeFindDistance(4)
+            .levelDecreasePerBlock(2)
+            .block(() -> ModBlocks.MILK_BLOCK.get())
+            .bucket(() -> ModItems.MILK_BUCKET.get());
 
     public static final RegistryObject<FlowingFluid> MILK =
             FLUIDS.register("milk", () -> new ForgeFlowingFluid.Source(MILK_PROPERTIES));
@@ -56,11 +62,4 @@ public class ModFluids {
                     });
                 }
             });
-
-    public static final ForgeFlowingFluid.Properties MILK_PROPERTIES = new ForgeFlowingFluid.Properties(
-            () -> MILK_TYPE.get(), () -> MILK.get(), () -> MILK_FLOWING.get())
-            .slopeFindDistance(4)
-            .levelDecreasePerBlock(2)
-            .block(() -> ModBlocks.MILK_BLOCK.get())
-            .bucket(() -> ModItems.MILK_BUCKET.get());
 }
