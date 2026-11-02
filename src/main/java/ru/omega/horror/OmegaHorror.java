@@ -32,6 +32,9 @@ import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.ItemFishedEvent;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -92,15 +95,27 @@ public class OmegaHorror {
         }
         if (e.getEntity().getTags().contains("omega_soundpad")) e.getEntity().spawnAtLocation(SOUND.get());
     }
+    private static void angerFish(ServerLevel level, Player player) {
+        for (AbstractFish fish : level.getEntitiesOfClass(AbstractFish.class, player.getBoundingBox().inflate(16))) {
+            fish.getPersistentData().putUUID("omega_target", player.getUUID());
+        }
+        player.sendSystemMessage(Component.literal("Рыбки запомнили это."));
+    }
+    @SubscribeEvent public void fishing(ItemFishedEvent e) {
+        if (e.getEntity().level() instanceof ServerLevel level) angerFish(level, e.getEntity());
+    }
     @SubscribeEvent public void hurt(LivingHurtEvent e) {
         if (!(e.getEntity() instanceof AbstractFish) || !(e.getSource().getEntity() instanceof Player player) || !(player.level() instanceof ServerLevel level)) return;
-        for (AbstractFish fish : level.getEntitiesOfClass(AbstractFish.class, player.getBoundingBox().inflate(16))) fish.addTag("omega_angry");
-        player.sendSystemMessage(Component.literal("Рыбки запомнили это."));
+        angerFish(level, player);
+    }
+    private static SoundEvent randomSound(ServerLevel level) {
+        SoundEvent[] sounds = { SoundEvents.AMBIENT_CAVE, SoundEvents.ENDERMAN_SCREAM, SoundEvents.GHAST_SCREAM, SoundEvents.WARDEN_HEARTBEAT, SoundEvents.CAT_AMBIENT };
+        return sounds[level.random.nextInt(sounds.length)];
     }
     @SubscribeEvent public void use(PlayerInteractEvent.RightClickItem e) {
         if (!(e.getLevel() instanceof ServerLevel level)) return;
         if (e.getItemStack().is(SOUND.get())) {
-            level.playSound(null, e.getEntity().blockPosition(), SoundEvents.AMBIENT_CAVE, SoundSource.PLAYERS, 1, 0.5f + level.random.nextFloat());
+            level.playSound(null, e.getEntity().blockPosition(), randomSound(level), SoundSource.PLAYERS, 1, 0.5f + level.random.nextFloat());
         }
     }
     @SubscribeEvent public void tick(TickEvent.LevelTickEvent e) {
@@ -117,7 +132,7 @@ public class OmegaHorror {
                 String[] names = {"Давид", "NULL", "Soundpad", "Mart"};
                 int n = level.random.nextInt(tags.length); monster(level, at, tags[n], names[n]);
             }
-            for (AbstractFish fish : level.getEntitiesOfClass(AbstractFish.class, p.getBoundingBox().inflate(16), f -> f.getTags().contains("omega_angry"))) {
+            for (AbstractFish fish : level.getEntitiesOfClass(AbstractFish.class, p.getBoundingBox().inflate(16), f -> f.getPersistentData().hasUUID("omega_target") && f.getPersistentData().getUUID("omega_target").equals(p.getUUID()))) {
                 fish.getNavigation().moveTo(p, 1.3);
                 if (fish.distanceToSqr(p) < 4) p.hurt(level.damageSources().mobAttack(fish), 2);
             }
@@ -128,8 +143,14 @@ public class OmegaHorror {
                 }
                 if (z.getTags().contains("omega_david")) {
                     for (Cow cow : level.getEntitiesOfClass(Cow.class, z.getBoundingBox().inflate(3))) cow.discard();
+                    if (z.distanceToSqr(p) < 16) {
+                        for (int slot = 0; slot < p.getInventory().getContainerSize(); slot++) {
+                            ItemStack stack = p.getInventory().getItem(slot);
+                            if (stack.is(Items.MILK_BUCKET)) p.getInventory().setItem(slot, new ItemStack(Items.BUCKET));
+                        }
+                    }
                 }
-                if (z.getTags().contains("omega_soundpad") && level.random.nextInt(3) == 0) level.playSound(null, z.blockPosition(), SoundEvents.AMBIENT_CAVE, SoundSource.HOSTILE, 1, .5f + level.random.nextFloat());
+                if (z.getTags().contains("omega_soundpad") && level.random.nextInt(3) == 0) level.playSound(null, z.blockPosition(), randomSound(level), SoundSource.HOSTILE, 1, .5f + level.random.nextFloat());
             }
         }
     }
