@@ -1,0 +1,20 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All Rights Reserved"
+[[mods]]
+modId="omegahorror"
+version="${file.jarVersion}"
+displayName="Super Duper Scary Omega Horror"
+description='''Страшные события, монстры и немного абсурда.'''
+[[dependencies.omegahorror]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.omegahorror]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.20.2)"
+ordering="NONE"
+side="BOTH"
