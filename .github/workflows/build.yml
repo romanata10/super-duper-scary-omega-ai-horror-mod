@@ -31,7 +31,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p run && echo "eula=true" > run/eula.txt
-          (sleep 150; echo stop) | gradle runServer --no-daemon > server-boot.txt 2>&1 || true
+          timeout --signal=TERM 260 gradle runServer --no-daemon > server-boot.txt 2>&1 || true
           echo "--- server log tail ---"
           tail -n 60 run/logs/latest.log 2>/dev/null || echo "NO LOG"
           if grep -qE 'Exception in thread|Caused by:|Failed to load|com\.omega\.horror' run/logs/latest.log 2>/dev/null; then
