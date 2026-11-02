@@ -36,7 +36,7 @@ public class RandomSoundsItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide) {
-            SoundEvent sound = SOUNDS[level.random.nextInt(SOUNDS.length)].value();
+            SoundEvent sound = SOUNDS[level.random.nextInt(SOUNDS.length)];
             level.playSound(null, player.blockPosition(), sound, SoundSource.PLAYERS, 2.0f,
                     0.5f + level.random.nextFloat());
             player.displayClientMessage(Component.literal("🔊 Проигрывается рандомный звук: "
