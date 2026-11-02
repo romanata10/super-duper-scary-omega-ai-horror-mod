@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "drawing=0": {
+      "model": "omega_horror:block/krita_0"
+    },
+    "drawing=1": {
+      "model": "omega_horror:block/krita_1"
+    },
+    "drawing=2": {
+      "model": "omega_horror:block/krita_2"
+    },
+    "drawing=3": {
+      "model": "omega_horror:block/krita_3"
+    },
+    "drawing=4": {
+      "model": "omega_horror:block/krita_4"
+    },
+    "drawing=5": {
+      "model": "omega_horror:block/krita_5"
+    },
+    "drawing=6": {
+      "model": "omega_horror:block/krita_6"
+    },
+    "drawing=7": {
+      "model": "omega_horror:block/krita_7"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["WW ", "W W"],
+  "key": {
+    "W": { "item": "minecraft:pink_wool" }
+  },
+  "result": { "item": "omega_horror:femboy_socks", "count": 1 }
+}

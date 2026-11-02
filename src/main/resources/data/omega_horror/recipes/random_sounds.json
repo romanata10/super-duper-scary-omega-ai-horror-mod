@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [" N ", "NRN", " N "],
+  "key": {
+    "N": { "item": "minecraft:note_block" },
+    "R": { "item": "minecraft:redstone" }
+  },
+  "result": { "item": "omega_horror:random_sounds", "count": 1 }
+}

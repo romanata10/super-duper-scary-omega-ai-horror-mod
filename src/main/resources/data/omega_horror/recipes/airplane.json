@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["I I", "III", "IWI"],
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "W": { "item": "minecraft:white_wool" }
+  },
+  "result": { "item": "omega_horror:airplane", "count": 1 }
+}

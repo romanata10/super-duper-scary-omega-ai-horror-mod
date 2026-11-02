@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["PPP", "PBP", "PPP"],
+  "key": {
+    "P": { "item": "minecraft:paper" },
+    "B": { "item": "minecraft:black_dye" }
+  },
+  "result": { "item": "omega_horror:krita_block", "count": 1 }
+}
