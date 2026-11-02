@@ -19,18 +19,20 @@ public class ModFluids {
     public static final DeferredRegister<FluidType> FLUID_TYPES =
             DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, OmegaHorrorMod.MODID);
 
-    public static final ForgeFlowingFluid.Properties MILK_PROPERTIES = new ForgeFlowingFluid.Properties(
-            () -> MILK_TYPE.get(), () -> MILK.get(), () -> MILK_FLOWING.get())
-            .slopeFindDistance(4)
-            .levelDecreasePerBlock(2)
-            .block(() -> ModBlocks.MILK_BLOCK.get())
-            .bucket(() -> ModItems.MILK_BUCKET.get());
+    private static ForgeFlowingFluid.Properties milkProperties() {
+        return new ForgeFlowingFluid.Properties(
+                () -> MILK_TYPE.get(), () -> MILK.get(), () -> MILK_FLOWING.get())
+                .slopeFindDistance(4)
+                .levelDecreasePerBlock(2)
+                .block(() -> ModBlocks.MILK_BLOCK.get())
+                .bucket(() -> ModItems.MILK_BUCKET.get());
+    }
 
     public static final RegistryObject<FlowingFluid> MILK =
-            FLUIDS.register("milk", () -> new ForgeFlowingFluid.Source(MILK_PROPERTIES));
+            FLUIDS.register("milk", () -> new ForgeFlowingFluid.Source(milkProperties()));
 
     public static final RegistryObject<FlowingFluid> MILK_FLOWING =
-            FLUIDS.register("flowing_milk", () -> new ForgeFlowingFluid.Flowing(MILK_PROPERTIES));
+            FLUIDS.register("flowing_milk", () -> new ForgeFlowingFluid.Flowing(milkProperties()));
 
     public static final RegistryObject<FluidType> MILK_TYPE = FLUID_TYPES.register("milk",
             () -> new FluidType(FluidType.Properties.create()

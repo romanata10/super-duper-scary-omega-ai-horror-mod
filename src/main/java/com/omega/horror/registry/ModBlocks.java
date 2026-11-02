@@ -32,7 +32,7 @@ public class ModBlocks {
                     .strength(2.0f).sound(SoundType.METAL)));
 
     /** Жидкое молоко (льётся из ведра). */
-    public static final RegistryObject<Block> MILK_BLOCK = BLOCKS.register("milk",
+    public static final RegistryObject<LiquidBlock> MILK_BLOCK = BLOCKS.register("milk",
             () -> new LiquidBlock(ModFluids.MILK, BlockBehaviour.Properties.of()
                     .noCollission().strength(100.0f).noLootTable().noOcclusion()));
 }
