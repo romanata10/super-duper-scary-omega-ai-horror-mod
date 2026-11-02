@@ -2,6 +2,8 @@ name: Build Forge mod
 on:
   push:
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,3 +29,13 @@ jobs:
           name: omega-horror-jar
           path: build/libs/*.jar
           if-no-files-found: error
+      - name: Publish prototype release
+        if: github.ref == 'refs/heads/arena/246c8239-super-duper-scary-omega-ai-hor'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view prototype-0.2.0 >/dev/null 2>&1; then
+            gh release create prototype-0.2.0 build/libs/omega-horror-0.2.0.jar \
+              --target "$GITHUB_SHA" --prerelease --title 'Omega Horror 0.2.0 — прототип' \
+              --notes 'Ранний прототип для Minecraft Java 1.20.1 и Forge 47.2.0. Не все запрошенные функции реализованы; в игре не проверен. Подробнее см. README в исходном коде.'
+          fi
