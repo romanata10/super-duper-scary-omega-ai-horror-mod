@@ -1,5 +1,7 @@
 package com.omega.horror.entity;
 
+import com.omega.horror.registry.ModSounds;
+
 import com.omega.horror.registry.ModBlocks;
 import com.omega.horror.registry.ModItems;
 import net.minecraft.core.BlockPos;
@@ -64,7 +66,7 @@ public class ButtonMonsterEntity extends Monster {
                 this.level().setBlock(air, ModBlocks.EVIL_BUTTON.get().defaultBlockState()
                         .setValue(ButtonBlock.FACING, dir)
                         .setValue(ButtonBlock.FACE, AttachFace.WALL), 3);
-                this.level().playSound(null, air, SoundEvents.STONE_BUTTON_CLICK_ON.value(),
+                this.level().playSound(null, air, ModSounds.STONE_BUTTON_CLICK_ON,
                         net.minecraft.sounds.SoundSource.BLOCKS, 1.0f, 0.5f);
                 break;
             }
@@ -81,22 +83,22 @@ public class ButtonMonsterEntity extends Monster {
             this.spawnAtLocation(new ItemStack(ModItems.EVIL_BUTTON.get(), count));
             left -= count;
         }
-        this.level().playSound(null, this.blockPosition(), SoundEvents.CHEST_OPEN.value(),
+        this.level().playSound(null, this.blockPosition(), ModSounds.CHEST_OPEN,
                 net.minecraft.sounds.SoundSource.HOSTILE, 1.0f, 0.7f);
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getAmbientSound() {
-        return SoundEvents.STONE_BUTTON_CLICK_OFF.value();
+        return ModSounds.STONE_BUTTON_CLICK_OFF;
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ANVIL_LAND.value();
+        return ModSounds.ANVIL_LAND;
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getDeathSound() {
-        return SoundEvents.GENERIC_EXPLODE.value();
+        return ModSounds.GENERIC_EXPLODE;
     }
 }

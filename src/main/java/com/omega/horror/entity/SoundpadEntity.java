@@ -1,5 +1,7 @@
 package com.omega.horror.entity;
 
+import com.omega.horror.registry.ModSounds;
+
 import com.omega.horror.registry.ModItems;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -14,7 +16,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,19 +25,19 @@ import net.minecraft.sounds.SoundSource;
  * При убийстве выпадает предмет рандомных звуков.
  */
 public class SoundpadEntity extends Monster {
-    private static final Holder.Reference<SoundEvent>[] SOUNDS = {
-            SoundEvents.CREEPER_PRIMED,
-            SoundEvents.ENDERMAN_SCREAM,
-            SoundEvents.GHAST_SCREAM,
-            SoundEvents.WITHER_SPAWN,
-            SoundEvents.ZOMBIE_AMBIENT,
-            SoundEvents.SKELETON_AMBIENT,
-            SoundEvents.BLAZE_AMBIENT,
-            SoundEvents.AMBIENT_CAVE,
-            SoundEvents.WARDEN_HEARTBEAT,
-            SoundEvents.NOTE_BLOCK_BASS,
-            SoundEvents.NOTE_BLOCK_PLING,
-            SoundEvents.DOLPHIN_AMBIENT
+    private static final SoundEvent[] SOUNDS = {
+            ModSounds.CREEPER_PRIMED,
+            ModSounds.ENDERMAN_SCREAM,
+            ModSounds.GHAST_SCREAM,
+            ModSounds.WITHER_SPAWN,
+            ModSounds.ZOMBIE_AMBIENT,
+            ModSounds.SKELETON_AMBIENT,
+            ModSounds.BLAZE_AMBIENT,
+            ModSounds.AMBIENT_CAVE,
+            ModSounds.WARDEN_HEARTBEAT,
+            ModSounds.NOTE_BLOCK_BASS,
+            ModSounds.NOTE_BLOCK_PLING,
+            ModSounds.DOLPHIN_AMBIENT
     };
 
     public SoundpadEntity(EntityType<? extends Monster> type, Level level) {
@@ -64,8 +65,8 @@ public class SoundpadEntity extends Monster {
     public void tick() {
         super.tick();
         if (!this.level().isClientSide && this.tickCount % 50 == 0 && this.random.nextInt(3) == 0) {
-            Holder.Reference<SoundEvent> sound = SOUNDS[this.random.nextInt(SOUNDS.length)].value();
-            this.level().playSound(null, this.blockPosition(), sound.value(), SoundSource.HOSTILE,
+            SoundEvent sound = SOUNDS[this.random.nextInt(SOUNDS.length)];
+            this.level().playSound(null, this.blockPosition(), sound, SoundSource.HOSTILE,
                     2.0f, 0.6f + this.random.nextFloat() * 0.8f);
         }
     }
@@ -78,16 +79,16 @@ public class SoundpadEntity extends Monster {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.NOTE_BLOCK_PLING.value();
+        return ModSounds.NOTE_BLOCK_PLING;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.NOTE_BLOCK_BASS.value();
+        return ModSounds.NOTE_BLOCK_BASS;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.NOTE_BLOCK_DIDGERIDOO.value();
+        return ModSounds.NOTE_BLOCK_DIDGERIDOO;
     }
 }

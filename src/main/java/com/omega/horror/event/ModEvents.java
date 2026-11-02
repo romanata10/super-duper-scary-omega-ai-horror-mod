@@ -1,5 +1,7 @@
 package com.omega.horror.event;
 
+import com.omega.horror.registry.ModSounds;
+
 import com.omega.horror.entity.EvilFishEntity;
 import com.omega.horror.entity.MartEntity;
 import com.omega.horror.entity.NullEntity;
@@ -187,7 +189,7 @@ public class ModEvents {
                 player.getInventory().add(new ItemStack(ModItems.GLASS_OF_MILK.get()));
                 player.sendSystemMessage(Component.literal("🥛 David дарит тебе стакан молока за то, что ты искупался в молоке!")
                         .withStyle(ChatFormatting.GOLD));
-                player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP.value(),
+                player.level().playSound(null, player.blockPosition(), ModSounds.PLAYER_LEVELUP,
                         SoundSource.PLAYERS, 1.0f, 1.5f);
             }
         } else {

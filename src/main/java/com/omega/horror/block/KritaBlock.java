@@ -1,5 +1,7 @@
 package com.omega.horror.block;
 
+import com.omega.horror.registry.ModSounds;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -36,7 +38,7 @@ public class KritaBlock extends Block {
         if (!level.isClientSide) {
             int next = (state.getValue(DRAWING) + 1) % 8;
             level.setBlock(pos, state.setValue(DRAWING, next), 3);
-            level.playSound(null, pos, SoundEvents.BRUSH_GENERIC, SoundSource.BLOCKS,
+            level.playSound(null, pos, ModSounds.BRUSH_GENERIC, SoundSource.BLOCKS,
                     1.0f, 0.5f + next * 0.1f);
             player.displayClientMessage(Component.literal("🎨 Ты нарисовал зло на Krita! (уровень " + next + "/7)"), true);
         }

@@ -1,5 +1,7 @@
 package com.omega.horror.entity;
 
+import com.omega.horror.registry.ModSounds;
+
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -45,23 +47,23 @@ public class EvilFishEntity extends Monster {
         super.tick();
         if (!this.level().isClientSide && this.tickCount % 30 == 0
                 && this.getTarget() instanceof Player) {
-            this.level().playSound(null, this.blockPosition(), SoundEvents.GENERIC_SWIM.value(),
+            this.level().playSound(null, this.blockPosition(), ModSounds.GENERIC_SWIM,
                     SoundSource.HOSTILE, 0.6f, 2.0f);
         }
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getAmbientSound() {
-        return SoundEvents.COD_AMBIENT.value();
+        return ModSounds.COD_AMBIENT;
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.COD_HURT.value();
+        return ModSounds.COD_HURT;
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getDeathSound() {
-        return SoundEvents.COD_DEATH.value();
+        return ModSounds.COD_DEATH;
     }
 }

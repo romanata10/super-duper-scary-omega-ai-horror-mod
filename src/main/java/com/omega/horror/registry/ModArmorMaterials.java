@@ -1,5 +1,7 @@
 package com.omega.horror.registry;
 
+import com.omega.horror.registry.ModSounds;
+
 import com.omega.horror.OmegaHorrorMod;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -9,7 +11,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.Items;
 
 public enum ModArmorMaterials implements ArmorMaterial {
-    FEMBOY("femboy", 100, new int[]{3, 6, 8, 3}, 30, SoundEvents.ARMOR_EQUIP_NETHERITE.value(), 5.0f, 0.2f,
+    FEMBOY("femboy", 100, new int[]{3, 6, 8, 3}, 30, ModSounds.ARMOR_EQUIP_NETHERITE, 5.0f, 0.2f,
             () -> Ingredient.of(Items.PINK_WOOL));
 
     private final String name;

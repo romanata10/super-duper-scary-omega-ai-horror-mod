@@ -1,5 +1,7 @@
 package com.omega.horror.entity;
 
+import com.omega.horror.registry.ModSounds;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.damagesource.DamageSource;
@@ -65,23 +67,23 @@ public class NullEntity extends Monster {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        this.level().playSound(null, this.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM.value(),
+        this.level().playSound(null, this.blockPosition(), ModSounds.WARDEN_SONIC_BOOM,
                 SoundSource.HOSTILE, 1.0f, 0.5f);
         return super.hurt(source, amount);
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getAmbientSound() {
-        return SoundEvents.WARDEN_HEARTBEAT.value();
+        return ModSounds.WARDEN_HEARTBEAT;
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.WARDEN_HURT.value();
+        return ModSounds.WARDEN_HURT;
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getDeathSound() {
-        return SoundEvents.WARDEN_DEATH.value();
+        return ModSounds.WARDEN_DEATH;
     }
 }

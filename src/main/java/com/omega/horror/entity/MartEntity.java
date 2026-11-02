@@ -1,5 +1,7 @@
 package com.omega.horror.entity;
 
+import com.omega.horror.registry.ModSounds;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.damagesource.DamageSource;
@@ -56,7 +58,7 @@ public class MartEntity extends PathfinderMob {
             if (player != null) {
                 player.sendSystemMessage(Component.literal("🛒 mart: " + LINES[this.random.nextInt(LINES.length)])
                         .withStyle(ChatFormatting.YELLOW));
-                this.level().playSound(null, this.blockPosition(), SoundEvents.VILLAGER_AMBIENT.value(),
+                this.level().playSound(null, this.blockPosition(), ModSounds.VILLAGER_AMBIENT,
                         SoundSource.NEUTRAL, 1.0f, 0.6f);
             }
         }
@@ -64,16 +66,16 @@ public class MartEntity extends PathfinderMob {
 
     @Override
     protected net.minecraft.sounds.SoundEvent getAmbientSound() {
-        return SoundEvents.ENDERMAN_STARE.value();
+        return ModSounds.ENDERMAN_STARE;
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.VILLAGER_HURT.value();
+        return ModSounds.VILLAGER_HURT;
     }
 
     @Override
     protected net.minecraft.sounds.SoundEvent getDeathSound() {
-        return SoundEvents.VILLAGER_DEATH.value();
+        return ModSounds.VILLAGER_DEATH;
     }
 }

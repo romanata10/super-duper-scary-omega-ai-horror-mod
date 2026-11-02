@@ -1,5 +1,7 @@
 package com.omega.horror.block;
 
+import com.omega.horror.registry.ModSounds;
+
 import com.omega.horror.entity.ButtonMonsterEntity;
 import com.omega.horror.registry.ModEntities;
 import net.minecraft.ChatFormatting;
@@ -47,7 +49,7 @@ public class EvilButtonBlock extends ButtonBlock {
                     monster.moveTo(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5,
                             level.random.nextFloat() * 360.0f, 0.0f);
                     level.addFreshEntity(monster);
-                    level.playSound(null, pos, SoundEvents.WITHER_SPAWN.value(), SoundSource.HOSTILE, 2.0f, 0.6f);
+                    level.playSound(null, pos, ModSounds.WITHER_SPAWN, SoundSource.HOSTILE, 2.0f, 0.6f);
                     if (level.getServer() != null) {
                         level.getServer().getPlayerList().broadcastSystemMessage(
                                 Component.literal("😈 ПОЯВИЛСЯ ЗЛОЙ КНОПОЧНЫЙ МОНСТР! УБЕЙ ЕГО — ВЫПАДЕТ 240 КНОПОК!")
