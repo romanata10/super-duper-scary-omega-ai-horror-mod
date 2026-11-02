@@ -2,6 +2,7 @@
   "fixed_time": 18000,
   "has_skylight": false,
   "has_ceiling": true,
+  "has_raids": false,
   "ultrawarm": false,
   "natural": false,
   "coordinate_scale": 1.0,
@@ -14,6 +15,12 @@
   "effects": "minecraft:the_end",
   "ambient_light": 0.0,
   "piglin_safe": false,
-  "monster_spawn_light_level": 0,
+  "monster_spawn_light_level": {
+    "type": "minecraft:uniform",
+    "value": {
+      "min_inclusive": 0,
+      "max_inclusive": 7
+    }
+  },
   "monster_spawn_block_light_limit": 0
 }

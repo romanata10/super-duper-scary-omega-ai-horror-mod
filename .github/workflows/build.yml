@@ -33,12 +33,12 @@ jobs:
           mkdir -p run && echo "eula=true" > run/eula.txt
           (sleep 150; echo stop) | gradle runServer --no-daemon > server-boot.txt 2>&1 || true
           echo "--- server log tail ---"
-          tail -n 80 run/logs/latest.log 2>/dev/null || echo "NO LOG"
-          if grep -qE 'Exception|Caused by|ERROR' run/logs/latest.log 2>/dev/null; then
-            grep -B2 -A12 -E 'Exception|Caused by' run/logs/latest.log | head -80 | while IFS= read -r line; do echo "::error::$line"; done
+          tail -n 60 run/logs/latest.log 2>/dev/null || echo "NO LOG"
+          if grep -qE 'Exception in thread|Caused by:|Failed to load|com\.omega\.horror' run/logs/latest.log 2>/dev/null; then
+            grep -B2 -A15 -E 'Exception in thread|Caused by:|Failed to load|com\.omega\.horror' run/logs/latest.log | head -100 | while IFS= read -r line; do echo "::error::$line"; done
             exit 1
           fi
-          grep -q 'Done' run/logs/latest.log && echo '::notice::server booted OK with the mod'
+          if grep -q 'Done (' run/logs/latest.log; then echo '::notice::server booted OK with the mod'; else echo '::error::server did not reach Done — see log tail above'; exit 1; fi
       - uses: actions/upload-artifact@v4
         with:
           name: omega-horror-jar
