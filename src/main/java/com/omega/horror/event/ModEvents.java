@@ -137,17 +137,15 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onFishInteract(PlayerInteractEvent.EntityInteract event) {
-        if (event.getTarget() instanceof AbstractFish && event.getEntity() instanceof Player player) {
-            angerFish(player);
+        if (event.getTarget() instanceof AbstractFish) {
+            angerFish(event.getEntity());
         }
     }
 
     /** Порыбачил — злые рыбки идут за тобой. */
     @SubscribeEvent
     public static void onFished(ItemFishedEvent event) {
-        if (event.getEntity() instanceof Player player) {
-            angerFish(player);
-        }
+        angerFish(event.getEntity());
     }
 
     private static void angerFish(Player player) {

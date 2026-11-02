@@ -45,7 +45,7 @@ public class AirplaneEntity extends Entity {
     }
 
     @Override
-    public Entity getControllingPassenger() {
+    public LivingEntity getControllingPassenger() {
         return this.getFirstPassenger() instanceof LivingEntity living ? living : null;
     }
 
